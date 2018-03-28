@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<portlet-app
+    xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+    version="2.0">
+    
+    <portlet>
+        <portlet-name>osivia-services-document-creation</portlet-name>
+        <display-name>Osivia services document creation portlet</display-name>
+        <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+        
+        <init-param>
+            <name>contextClass</name>
+            <value>org.osivia.portal.api.portlet.AnnotationPortletApplicationContext</value>
+        </init-param>
+        
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>org.osivia.services.document.creation.portlet.PortletConfig</value>
+        </init-param>
+        
+        <expiration-cache>180</expiration-cache>
+        
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>Admin</portlet-mode>  
+        </supports>
+
+        <portlet-info>
+            <title>document creation portlet</title>
+        </portlet-info>
+    </portlet>    
+        
+    
+    
+	<portlet>
+		<portlet-name>osivia-services-document-creationPlugin</portlet-name>
+		<portlet-class>org.osivia.services.document.creation.plugin.DocumentCreationPlugin</portlet-class>
+		<expiration-cache>180</expiration-cache>
+
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+
+		<portlet-info>
+			<title>document creation plugin</title>
+		</portlet-info>
+	</portlet>        
+    
+</portlet-app>

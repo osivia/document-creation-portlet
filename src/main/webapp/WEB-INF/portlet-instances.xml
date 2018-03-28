@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE deployments PUBLIC "-//JBoss Portal//DTD Portlet Instances 2.6//EN" "http://www.jboss.org/portal/dtd/portlet-instances_2_6.dtd">
+
+<deployments>
+
+    <deployment>
+        <if-exists>overwrite</if-exists>
+        <instance>
+            <display-name xml:lang="en">Nuxeo - document creation</display-name>
+            <display-name xml:lang="fr">Nuxeo - document creation</display-name>
+            <instance-id>osivia-services-document-creation-portletInstance</instance-id>
+            <portlet-ref>osivia-services-document-creation</portlet-ref>
+            <security-constraint>
+            	<policy-permission>
+					<action-name>admin</action-name>
+					<role-name>Administrators</role-name>
+				</policy-permission>
+                <policy-permission>
+                    <action-name>view</action-name>
+                    <unchecked />
+                </policy-permission>
+            </security-constraint>
+        </instance>
+    </deployment>
+    
+    <deployment>
+        <if-exists>overwrite</if-exists>
+        <instance>
+            <display-name xml:lang="en">document creation plugin</display-name>
+            <display-name xml:lang="fr">document creation plugin</display-name>
+            <instance-id>osivia-services-document-creationPlugin-instance</instance-id>
+            <portlet-ref>osivia-services-document-creationPlugin</portlet-ref>
+            <preferences>
+                <preference>
+                    <name>hide</name>
+                    <value>true</value>
+                </preference>
+            </preferences>            
+        </instance>
+    </deployment>    
+
+</deployments>
