@@ -135,7 +135,6 @@ public class DocumentCreationMenubarModule implements MenubarModule {
         Map<String, String> windowProperties = new HashMap<>(2);
         windowProperties.put(DOC_TYPE_WINDOW_PARAM, docTypeParam);
         windowProperties.put(Constants.WINDOW_PROP_URI, currentDocPath);
-        windowProperties.put("osivia.document.creation.savedPageId", nuxeoController.getPageId());
 
         return nuxeoController.getPortalUrlFactory().getStartPortletUrl(nuxeoController.getPortalCtx(), DOCUMENT_CREATION_PORTLET, windowProperties,
                 PortalUrlType.MODAL);

@@ -2,7 +2,6 @@ package org.osivia.services.document.creation.portlet.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.nuxeo.ecm.automation.client.model.Document;
 import org.osivia.portal.api.Constants;
@@ -213,39 +211,16 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
             if (isOnlyofficeRegistered) {
                 // rediriger vers onlyoffice avec path du doc créé
                 try {
-
-                    String savedPageId = window.getProperty("osivia.document.creation.savedPageId");
-
-                    String encodedSavedPageId = URLEncoder.encode(savedPageId, CharEncoding.UTF_8);
-
-                    //
                     Map<String, String> windowProperties = new HashMap<>();
                     windowProperties.put(Constants.WINDOW_PROP_URI, createdDocument.getPath());
                     windowProperties.put("osivia.hideTitle", "1");
                     windowProperties.put("osivia.onlyoffice.withLock", Boolean.TRUE.toString());
                     windowProperties.put(InternalConstants.PROP_WINDOW_TITLE, bundle.getString("ONLYOFFICE_EDIT"));
-                    //
-                    // ControllerContext controllerContext = ControllerContextAdapter.getControllerContext(portalControllerContext);
-
-                    // String onlyofficePortlerUrl = nuxeoController.getPortalUrlFactory().getStartPortletUrl(nuxeoController.getPortalCtx(),
-                    // OnlyofficeLiveEditHelper.ONLYOFFICE_PORTLET_INSTANCE, windowProperties, PortalUrlType.MODAL);
-                    //
-                    // StringUtils.replace(onlyofficePortlerUrl, URLEncoder.encode("/osivia-util/modal", CharEncoding.UTF_8), encodedSavedPageId);
 
                     String onlyofficePortlerUrl = nuxeoController.getPortalUrlFactory().getCMSUrl(nuxeoController.getPortalCtx(), null,
                             createdDocument.getPath(), null, null, DocumentCreationPlugin.ONLYOFFICE_DISPLAYCONTEXT, null, null, null, null);
 
-
-                    // String decodedUrl = URLDecoder.decode(onlyofficePortlerUrl, CharEncoding.UTF_8);
-                    // List<NameValuePair> urlParams = URLEncodedUtils.parse(new URI(decodedUrl), CharEncoding.UTF_8);
-                    //                    URLEncodedUtils.
-
-
-                    // String onlyofficePortlerUrl = OnlyofficeLiveEditHelper.getStartOnlyofficePortlerUrl(bundle, createdDocument.getPath(), nuxeoController,
-                    // Boolean.TRUE);
                     response.sendRedirect(onlyofficePortlerUrl);
-                    // } catch (PortalException e) {
-                    // throw new PortletException(e);
                 } catch (IOException e) {
                     throw new PortletException(e);
                 }
