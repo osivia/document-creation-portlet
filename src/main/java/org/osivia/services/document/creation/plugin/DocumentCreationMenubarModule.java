@@ -73,6 +73,7 @@ public class DocumentCreationMenubarModule implements MenubarModule {
                 // new word doc modal
                 createWordDocument.getData().put("target", "#osivia-modal");
                 createWordDocument.getData().put("load-url", getDocumentWordCreationPortletUrl(nuxeoController, docPath));
+                createWordDocument.setDivider(true);
                 menubar.add(createWordDocument);
 
                 // create EXCEL

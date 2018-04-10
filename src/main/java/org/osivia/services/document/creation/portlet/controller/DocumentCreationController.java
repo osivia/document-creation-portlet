@@ -61,9 +61,6 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
 
     private static final String DEFAULT_VIEW = "view";
 
-    /** Nuxeo path window property name. */
-    private static final String NUXEO_PATH_WINDOW_PROPERTY = "osivia.nuxeoPath";
-
     /** Bundle factory. */
     private final IBundleFactory bundleFactory;
 
