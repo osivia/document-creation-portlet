@@ -91,6 +91,7 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
 
     @RenderMapping
     public String view(RenderRequest request, RenderResponse response) throws PortletException {
+        request.setAttribute("error", request.getParameter("error"));
         return DEFAULT_VIEW;
     }
 
@@ -181,21 +182,23 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
                 Document currentDocument = documentContext.getDoc();
                 nuxeoController.setCurrentDoc(currentDocument);
 
-
                 // the new document name
-                String newDocName = StringUtils.isNotBlank(request.getParameter("newDocName")) ? request.getParameter("newDocName")
-                        : bundle.getString(getDocTypeKey(docType));
+                String newDocName = request.getParameter("newDocName");
 
-                String newDocExtension = getExtensionByDocType(docType);
+                if (StringUtils.isNotBlank(newDocName)) {
+                    String newDocExtension = getExtensionByDocType(docType);
 
-                // the new document sample
-                InputStream blankStreamByDocType = getBlankStreamByDocType(docType);
+                    // the new document sample
+                    InputStream blankStreamByDocType = getBlankStreamByDocType(docType);
 
-                // create document from sample
-                UploadFileCommand uploadFileCommand = new UploadFileCommand(blankStreamByDocType, newDocName + newDocExtension, docType,
-                        currentDocument.getId());
-                createdDocument = (Document) nuxeoController.executeNuxeoCommand(uploadFileCommand);
-                addNotification(nuxeoController.getPortalCtx(), "NEW_DOC_CREATED_SUCCESS", NotificationsType.SUCCESS);
+                    // create document from sample
+                    UploadFileCommand uploadFileCommand = new UploadFileCommand(blankStreamByDocType, newDocName + newDocExtension, docType,
+                            currentDocument.getId());
+                    createdDocument = (Document) nuxeoController.executeNuxeoCommand(uploadFileCommand);
+                    addNotification(nuxeoController.getPortalCtx(), "NEW_DOC_CREATED_SUCCESS", NotificationsType.SUCCESS);
+                } else {
+                    response.setRenderParameter("error", getBundleFactory().getBundle(request.getLocale()).getString("NEW_DOC_TITLE_REQUIRED"));
+                }
             }
         } catch (Exception e) {
             addNotification(nuxeoController.getPortalCtx(), "NEW_DOC_CREATED_ERROR", NotificationsType.ERROR);
