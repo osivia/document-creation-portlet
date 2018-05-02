@@ -10,6 +10,7 @@ import org.osivia.portal.api.Constants;
 import org.osivia.portal.api.PortalException;
 import org.osivia.portal.api.cms.DocumentContext;
 import org.osivia.portal.api.cms.EcmDocument;
+import org.osivia.portal.api.cms.impl.BasicPermissions;
 import org.osivia.portal.api.context.PortalControllerContext;
 import org.osivia.portal.api.internationalization.Bundle;
 import org.osivia.portal.api.internationalization.IBundleFactory;
@@ -17,6 +18,7 @@ import org.osivia.portal.api.internationalization.IInternationalizationService;
 import org.osivia.portal.api.locator.Locator;
 import org.osivia.portal.api.menubar.IMenubarService;
 import org.osivia.portal.api.menubar.MenubarDropdown;
+import org.osivia.portal.api.menubar.MenubarGroup;
 import org.osivia.portal.api.menubar.MenubarItem;
 import org.osivia.portal.api.menubar.MenubarModule;
 import org.osivia.portal.api.urls.PortalUrlType;
@@ -62,9 +64,10 @@ public class DocumentCreationMenubarModule implements MenubarModule {
             String typeName = documentContext.getType().getName();
             Document doc = (Document) documentContext.getDoc();
             String docPath = doc.getPath();
-            if (StringUtils.equals(typeName, "Folder")) {
+            BasicPermissions permissions = documentContext.getPermissions(BasicPermissions.class);
+            if (StringUtils.equals(typeName, "Folder") && permissions.isEditableByUser()) {
                 Bundle bundle = bundleFactory.getBundle(portalControllerContext.getRequest().getLocale());
-                MenubarDropdown addDropdown = menubarService.getDropdown(portalControllerContext, "ADD");
+                MenubarDropdown addDropdown = getAddDropdown(portalControllerContext, bundle);
 
                 NuxeoController nuxeoController = new NuxeoController(portalControllerContext);
                 // create WORD
@@ -93,6 +96,22 @@ public class DocumentCreationMenubarModule implements MenubarModule {
                 menubar.add(createPowerpointDocument);
             }
         }
+    }
+
+    /**
+     * Retrieve or build the add menu dropdown
+     *
+     * @param portalControllerContext
+     * @param bundle
+     * @return
+     */
+    private MenubarDropdown getAddDropdown(PortalControllerContext portalControllerContext, Bundle bundle) {
+        MenubarDropdown addDropdown = menubarService.getDropdown(portalControllerContext, "ADD");
+        if (addDropdown == null) {
+            addDropdown = new MenubarDropdown("ADD", bundle.getString("ADD"), "halflings halflings-plus", MenubarGroup.CMS, 2);
+            this.menubarService.addDropdown(portalControllerContext, addDropdown);
+        }
+        return addDropdown;
     }
 
     /**
