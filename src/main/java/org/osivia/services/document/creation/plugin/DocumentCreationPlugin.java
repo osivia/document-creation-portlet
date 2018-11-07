@@ -21,12 +21,13 @@ public class DocumentCreationPlugin extends AbstractPluginPortlet {
     public static final String ONLYOFFICE_DISPLAYCONTEXT = "onlyoffice";
 
     @Override
-    protected void customizeCMSProperties(String customizationId, CustomizationContext context) {
+    protected void customizeCMSProperties(CustomizationContext context) {
         // Menubar Formater
         customizeMenubarModules(context);
 
         // Players
         customizePlayers(context);
+        
     }
 
     @Override
@@ -47,4 +48,6 @@ public class DocumentCreationPlugin extends AbstractPluginPortlet {
         List<IPlayerModule> players = getPlayers(context);
         players.add(new DocumentCreationPlayer(context.getLocale()));
     }
+
+
 }

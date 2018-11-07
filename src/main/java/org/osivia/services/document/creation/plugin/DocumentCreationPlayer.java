@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.nuxeo.ecm.automation.client.model.Document;
 import org.osivia.portal.api.Constants;
 import org.osivia.portal.api.cms.DocumentContext;
-import org.osivia.portal.api.cms.impl.BasicPublicationInfos;
+
 import org.osivia.portal.api.internationalization.Bundle;
 import org.osivia.portal.api.internationalization.IBundleFactory;
 import org.osivia.portal.api.internationalization.IInternationalizationService;
@@ -16,6 +16,8 @@ import org.osivia.portal.api.locator.Locator;
 import org.osivia.portal.api.player.Player;
 import org.osivia.portal.core.constants.InternalConstants;
 
+import fr.toutatice.portail.cms.nuxeo.api.cms.NuxeoDocumentContext;
+import fr.toutatice.portail.cms.nuxeo.api.cms.NuxeoPublicationInfos;
 import fr.toutatice.portail.cms.nuxeo.api.liveedit.OnlyofficeLiveEditHelper;
 import fr.toutatice.portail.cms.nuxeo.api.player.INuxeoPlayerModule;
 
@@ -35,15 +37,15 @@ public class DocumentCreationPlayer implements INuxeoPlayerModule {
     }
 
     @Override
-    public Player getCMSPlayer(DocumentContext<Document> docCtx) {
+    public Player getCMSPlayer(NuxeoDocumentContext documentContext) {
 
-        BasicPublicationInfos basicPublicationInfos = docCtx.getPublicationInfos(BasicPublicationInfos.class);
-        if (docCtx.getDoc() != null && StringUtils.equals(basicPublicationInfos.getDisplayContext(), DocumentCreationPlugin.ONLYOFFICE_DISPLAYCONTEXT)) {
+ 
+        if (documentContext.getDocument() != null && StringUtils.equals(documentContext.getDisplayContext(), DocumentCreationPlugin.ONLYOFFICE_DISPLAYCONTEXT)) {
 
             Bundle bundle = bundleFactory.getBundle(locale);
             Map<String, String> windowProperties = new HashMap<>();
 
-            windowProperties.put(Constants.WINDOW_PROP_URI, docCtx.getDoc().getPath());
+            windowProperties.put(Constants.WINDOW_PROP_URI, documentContext.getDocument().getPath());
             windowProperties.put("osivia.hideTitle", "1");
             windowProperties.put("osivia.onlyoffice.withLock", Boolean.TRUE.toString());
             windowProperties.put(InternalConstants.PROP_WINDOW_TITLE, bundle.getString("ONLYOFFICE_EDIT"));
@@ -55,5 +57,6 @@ public class DocumentCreationPlayer implements INuxeoPlayerModule {
         }
         return null;
     }
+
 
 }

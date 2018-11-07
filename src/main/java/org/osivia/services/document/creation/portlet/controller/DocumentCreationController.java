@@ -179,7 +179,7 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
                 // Computed path
                 path = nuxeoController.getComputedPath(path);
                 NuxeoDocumentContext documentContext = nuxeoController.getDocumentContext(path);
-                Document currentDocument = documentContext.getDoc();
+                Document currentDocument = documentContext.getDocument();
                 nuxeoController.setCurrentDoc(currentDocument);
 
                 // the new document name

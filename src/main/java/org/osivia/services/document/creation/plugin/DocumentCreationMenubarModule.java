@@ -10,6 +10,7 @@ import org.osivia.portal.api.Constants;
 import org.osivia.portal.api.PortalException;
 import org.osivia.portal.api.cms.DocumentContext;
 import org.osivia.portal.api.cms.EcmDocument;
+import org.osivia.portal.api.cms.PublicationInfos;
 import org.osivia.portal.api.context.PortalControllerContext;
 import org.osivia.portal.api.internationalization.Bundle;
 import org.osivia.portal.api.internationalization.IBundleFactory;
@@ -26,6 +27,8 @@ import org.osivia.portal.core.cms.CMSPublicationInfos;
 import org.osivia.portal.core.cms.CMSServiceCtx;
 
 import fr.toutatice.portail.cms.nuxeo.api.NuxeoController;
+import fr.toutatice.portail.cms.nuxeo.api.cms.NuxeoDocumentContext;
+import fr.toutatice.portail.cms.nuxeo.api.cms.NuxeoPublicationInfos;
 import fr.toutatice.portail.cms.nuxeo.api.services.dao.DocumentDAO;
 
 /**
@@ -60,22 +63,17 @@ public class DocumentCreationMenubarModule implements MenubarModule {
     }
 
     @Override
-    public void customizeDocument(PortalControllerContext portalControllerContext, List<MenubarItem> menubar,
-            DocumentContext<? extends EcmDocument> documentContext) throws PortalException {
-        if (documentContext != null && documentContext.getDoc() instanceof Document) {
-            String typeName = documentContext.getType().getName();
-            Document doc = (Document) documentContext.getDoc();
+    public void customizeDocument(PortalControllerContext portalControllerContext, List<MenubarItem> menubar, DocumentContext documentContext)
+            throws PortalException {
+
+        if (documentContext != null && documentContext.getDocument() instanceof Document) {
+            String typeName = documentContext.getDocumentType().getName();
+            Document doc = (Document) documentContext.getDocument();
             String docPath = doc.getPath();
             if (StringUtils.equals(typeName, "Folder")) {
                 NuxeoController nuxeoController = new NuxeoController(portalControllerContext);
-                CMSServiceCtx cmsCtx = nuxeoController.getCMSCtx();
-                CMSPublicationInfos publicationInfos;
-                try {
-                    publicationInfos = NuxeoController.getCMSService().getPublicationInfos(cmsCtx, docPath);
-                } catch (CMSException e) {
-                    throw new PortalException(e);
-                }
-                boolean acceptFiles = publicationInfos.getSubTypes().containsKey("File");
+                NuxeoPublicationInfos publicationInfos = ((NuxeoDocumentContext) documentContext).getPublicationInfos();
+                    boolean acceptFiles = publicationInfos.getSubtypes().contains("File");
 
                 if (acceptFiles) {
                     Bundle bundle = bundleFactory.getBundle(portalControllerContext.getRequest().getLocale());
@@ -169,7 +167,13 @@ public class DocumentCreationMenubarModule implements MenubarModule {
                 PortalUrlType.MODAL);
     }
 
+
     @Override
-    public void customizeSpace(PortalControllerContext arg0, List<MenubarItem> arg1, DocumentContext<? extends EcmDocument> arg2) throws PortalException {
+    public void customizeSpace(PortalControllerContext portalControllerContext, List<MenubarItem> menubar, DocumentContext spaceDocumentContext)
+            throws PortalException {
+
+        
     }
+
+
 }
