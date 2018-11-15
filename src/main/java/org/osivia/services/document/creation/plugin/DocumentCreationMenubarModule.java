@@ -67,39 +67,41 @@ public class DocumentCreationMenubarModule implements MenubarModule {
             throws PortalException {
 
         if (documentContext != null && documentContext.getDocument() instanceof Document) {
-            String typeName = documentContext.getDocumentType().getName();
-            Document doc = (Document) documentContext.getDocument();
-            String docPath = doc.getPath();
-            if (StringUtils.equals(typeName, "Folder")) {
-                NuxeoController nuxeoController = new NuxeoController(portalControllerContext);
-                NuxeoPublicationInfos publicationInfos = ((NuxeoDocumentContext) documentContext).getPublicationInfos();
+            if (documentContext.getDocumentType() != null) {
+                String typeName = documentContext.getDocumentType().getName();
+                Document doc = (Document) documentContext.getDocument();
+                String docPath = doc.getPath();
+                if (StringUtils.equals(typeName, "Folder")) {
+                    NuxeoController nuxeoController = new NuxeoController(portalControllerContext);
+                    NuxeoPublicationInfos publicationInfos = ((NuxeoDocumentContext) documentContext).getPublicationInfos();
                     boolean acceptFiles = publicationInfos.getSubtypes().contains("File");
 
-                if (acceptFiles) {
-                    Bundle bundle = bundleFactory.getBundle(portalControllerContext.getRequest().getLocale());
-                    MenubarDropdown addDropdown = getAddDropdown(portalControllerContext, bundle);
-                    // create WORD
-                    MenubarItem createWordDocument = new MenubarItem("NEW_WORD_DOCUMENT", bundle.getString("NEW_WORD_DOCUMENT"),
-                            DocumentDAO.getInstance().getIcon(DOCX_MIMETYPE), addDropdown, 10, "#", null, null, null);
-                    // new word doc modal
-                    createWordDocument.getData().put("target", "#osivia-modal");
-                    createWordDocument.getData().put("load-url", getDocumentWordCreationPortletUrl(nuxeoController, docPath));
-                    createWordDocument.setDivider(true);
-                    menubar.add(createWordDocument);
-                    // create EXCEL
-                    MenubarItem createExcelDocument = new MenubarItem("NEW_EXCEL_DOCUMENT", bundle.getString("NEW_EXCEL_DOCUMENT"),
-                            DocumentDAO.getInstance().getIcon(XLSX_MIMETYPE), addDropdown, 11, "#", null, null, null);
-                    // new excel doc modal
-                    createExcelDocument.getData().put("target", "#osivia-modal");
-                    createExcelDocument.getData().put("load-url", getDocumentExcelCreationPortletUrl(nuxeoController, docPath));
-                    menubar.add(createExcelDocument);
-                    // create POWERPOINT
-                    MenubarItem createPowerpointDocument = new MenubarItem("NEW_POWERPOINT_DOCUMENT", bundle.getString("NEW_POWERPOINT_DOCUMENT"),
-                            DocumentDAO.getInstance().getIcon(PPTX_MIMETYPE), addDropdown, 12, "#", null, null, null);
-                    // new ppt doc modal
-                    createPowerpointDocument.getData().put("target", "#osivia-modal");
-                    createPowerpointDocument.getData().put("load-url", getDocumentPowerpointCreationPortletUrl(nuxeoController, docPath));
-                    menubar.add(createPowerpointDocument);
+                    if (acceptFiles) {
+                        Bundle bundle = bundleFactory.getBundle(portalControllerContext.getRequest().getLocale());
+                        MenubarDropdown addDropdown = getAddDropdown(portalControllerContext, bundle);
+                        // create WORD
+                        MenubarItem createWordDocument = new MenubarItem("NEW_WORD_DOCUMENT", bundle.getString("NEW_WORD_DOCUMENT"),
+                                DocumentDAO.getInstance().getIcon(DOCX_MIMETYPE), addDropdown, 10, "#", null, null, null);
+                        // new word doc modal
+                        createWordDocument.getData().put("target", "#osivia-modal");
+                        createWordDocument.getData().put("load-url", getDocumentWordCreationPortletUrl(nuxeoController, docPath));
+                        createWordDocument.setDivider(true);
+                        menubar.add(createWordDocument);
+                        // create EXCEL
+                        MenubarItem createExcelDocument = new MenubarItem("NEW_EXCEL_DOCUMENT", bundle.getString("NEW_EXCEL_DOCUMENT"),
+                                DocumentDAO.getInstance().getIcon(XLSX_MIMETYPE), addDropdown, 11, "#", null, null, null);
+                        // new excel doc modal
+                        createExcelDocument.getData().put("target", "#osivia-modal");
+                        createExcelDocument.getData().put("load-url", getDocumentExcelCreationPortletUrl(nuxeoController, docPath));
+                        menubar.add(createExcelDocument);
+                        // create POWERPOINT
+                        MenubarItem createPowerpointDocument = new MenubarItem("NEW_POWERPOINT_DOCUMENT", bundle.getString("NEW_POWERPOINT_DOCUMENT"),
+                                DocumentDAO.getInstance().getIcon(PPTX_MIMETYPE), addDropdown, 12, "#", null, null, null);
+                        // new ppt doc modal
+                        createPowerpointDocument.getData().put("target", "#osivia-modal");
+                        createPowerpointDocument.getData().put("load-url", getDocumentPowerpointCreationPortletUrl(nuxeoController, docPath));
+                        menubar.add(createPowerpointDocument);
+                    }
                 }
             }
         }
