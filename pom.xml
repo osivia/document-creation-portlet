@@ -9,7 +9,7 @@
 	
 	<properties>
         <!-- Toutatice -->
-        <toutatice.version>4.7.14-RC2</toutatice.version>
+        <toutatice.version>4.7.14</toutatice.version>
 	</properties>
 	
 	<dependencies>
