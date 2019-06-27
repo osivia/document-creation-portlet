@@ -214,7 +214,7 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
                     Map<String, String> windowProperties = new HashMap<>();
                     windowProperties.put(Constants.WINDOW_PROP_URI, createdDocument.getPath());
                     windowProperties.put("osivia.hideTitle", "1");
-                    windowProperties.put("osivia.onlyoffice.withLock", Boolean.TRUE.toString());
+                    windowProperties.put("osivia.onlyoffice.withLock", Boolean.FALSE.toString());
                     windowProperties.put(InternalConstants.PROP_WINDOW_TITLE, bundle.getString("ONLYOFFICE_EDIT"));
 
                     String onlyofficePortlerUrl = nuxeoController.getPortalUrlFactory().getCMSUrl(nuxeoController.getPortalCtx(), null,

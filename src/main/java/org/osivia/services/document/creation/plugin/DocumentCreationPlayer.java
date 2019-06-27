@@ -47,7 +47,7 @@ public class DocumentCreationPlayer implements INuxeoPlayerModule {
 
             windowProperties.put(Constants.WINDOW_PROP_URI, documentContext.getDocument().getPath());
             windowProperties.put("osivia.hideTitle", "1");
-            windowProperties.put("osivia.onlyoffice.withLock", Boolean.TRUE.toString());
+            windowProperties.put("osivia.onlyoffice.withLock", Boolean.FALSE.toString());
             windowProperties.put(InternalConstants.PROP_WINDOW_TITLE, bundle.getString("ONLYOFFICE_EDIT"));
 
             Player onlyofficePlayer = new Player();
