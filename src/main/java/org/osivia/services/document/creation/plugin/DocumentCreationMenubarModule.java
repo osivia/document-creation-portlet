@@ -98,7 +98,7 @@ public class DocumentCreationMenubarModule implements MenubarModule {
                         }
                         MenubarItem createWordDocument = new MenubarItem("NEW_WORD_DOCUMENT", bundle.getString("NEW_WORD_DOCUMENT"),
                                 null, addDropdown, 10, "javascript:;", null, null, null);
-                        createWordDocument.setDivider(true);
+                        //createWordDocument.setDivider(true);
                         createWordDocument.setCustomizedIcon(docxIcon);
                         // new word doc modal
                         createWordDocument.getData().put("target", "#osivia-modal");
