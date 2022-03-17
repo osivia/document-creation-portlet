@@ -4,7 +4,11 @@ import java.io.InputStream;
 
 import org.nuxeo.ecm.automation.client.OperationRequest;
 import org.nuxeo.ecm.automation.client.Session;
+import org.nuxeo.ecm.automation.client.adapters.DocumentService;
 import org.nuxeo.ecm.automation.client.model.Blob;
+import org.nuxeo.ecm.automation.client.model.Document;
+import org.nuxeo.ecm.automation.client.model.IdRef;
+import org.nuxeo.ecm.automation.client.model.PropertyMap;
 import org.nuxeo.ecm.automation.client.model.StreamBlob;
 
 import fr.toutatice.portail.cms.nuxeo.api.INuxeoCommand;
@@ -14,7 +18,9 @@ import fr.toutatice.portail.cms.nuxeo.api.INuxeoCommand;
  */
 public class UploadFileCommand implements INuxeoCommand {
 
-    private final InputStream inputStream;
+    private static final String DOCXF_MIMETYPE = "application/onlyoffice-docxf";
+
+	private final InputStream inputStream;
 
     private final String filename;
 
@@ -33,11 +39,30 @@ public class UploadFileCommand implements INuxeoCommand {
     @Override
     public Object execute(Session nuxeoSession) throws Exception {
         Blob blob = new StreamBlob(inputStream, filename, mimeType);
-        // Operation request
-        OperationRequest operationRequest = nuxeoSession.newRequest("FileManager.Import").setInput(blob);
-        operationRequest.setContextProperty("currentDocument", parentId);
+        
+        
+        if(mimeType.equals(DOCXF_MIMETYPE)) {
+        	
+    		DocumentService adapter = nuxeoSession.getAdapter(DocumentService.class);
+        	
+        	PropertyMap properties = new PropertyMap();
+        	properties.set("dc:title", filename);
+        	
+        	String doctype = "DocxfFile";
+        	
+    		Document doc = adapter.createDocument(new IdRef(parentId), doctype, null, properties);
 
-        return operationRequest.execute();
+        	adapter.setBlob(doc, blob, "file:content");
+        	
+        	return doc;
+        }
+        else {
+            // Operation request
+            OperationRequest operationRequest = nuxeoSession.newRequest("FileManager.Import").setInput(blob);
+            operationRequest.setContextProperty("currentDocument", parentId);
+            return operationRequest.execute();
+        }
+        
     }
 
     @Override

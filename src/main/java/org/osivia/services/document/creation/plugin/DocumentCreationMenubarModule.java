@@ -40,7 +40,9 @@ public class DocumentCreationMenubarModule implements MenubarModule {
     public static final String XLSX_MIMETYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     public static final String PPTX_MIMETYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-
+    
+    public static final String DOCXF_MIMETYPE = "application/onlyoffice-docxf";
+    
     private static final String DOCUMENT_CREATION_PORTLET = "osivia-services-document-creation-portletInstance";
 
 
@@ -102,6 +104,16 @@ public class DocumentCreationMenubarModule implements MenubarModule {
                     createPowerpointDocument.getData().put("target", "#osivia-modal");
                     createPowerpointDocument.getData().put("load-url", getDocumentPowerpointCreationPortletUrl(nuxeoController, docPath));
                     menubar.add(createPowerpointDocument);
+                    
+                    
+                    // create docxf document
+                    MenubarItem createDocxfFormDocument = new MenubarItem("NEW_DOCXF_DOCUMENT", bundle.getString("NEW_DOCXF_DOCUMENT"),
+                    		DocumentDAO.getInstance().getIcon(DOCXF_MIMETYPE), addDropdown, 13, "#", null, null, null);
+                    // new ppt doc modal
+                    createDocxfFormDocument.getData().put("target", "#osivia-modal");
+                    createDocxfFormDocument.getData().put("load-url", getDocxfCreationPortletUrl(nuxeoController, docPath));
+                    menubar.add(createDocxfFormDocument);
+
                 }
             }
         }
@@ -152,7 +164,18 @@ public class DocumentCreationMenubarModule implements MenubarModule {
     private String getDocumentPowerpointCreationPortletUrl(NuxeoController nuxeoController, String currentDocPath) throws PortalException {
         return getDocumentCreationPortletUrl(nuxeoController, PPTX_MIMETYPE, currentDocPath);
     }
+    
+    /**
+     * @param nuxeoController
+     * @param currentDocPath
+     * @return
+     * @throws PortalException
+     */
+    private String getDocxfCreationPortletUrl(NuxeoController nuxeoController, String currentDocPath) throws PortalException {
+        return getDocumentCreationPortletUrl(nuxeoController, DOCXF_MIMETYPE, currentDocPath);
+    }
 
+    
     /**
      * @param nuxeoController
      * @param docTypeParam

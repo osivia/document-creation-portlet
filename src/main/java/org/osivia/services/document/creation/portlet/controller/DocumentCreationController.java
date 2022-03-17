@@ -58,7 +58,9 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
     private static final String BLANK_XLSX_PATH = "/WEB-INF/classes/blank.xlsx";
 
     private static final String BLANK_PPTX_PATH = "/WEB-INF/classes/blank.pptx";
-
+    
+    private static final String BLANK_DOCXF_PATH = "/WEB-INF/classes/blank.docxf";
+    
     private static final String DEFAULT_VIEW = "view";
 
     /** Bundle factory. */
@@ -132,6 +134,10 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
         if (StringUtils.equals(docType, DocumentCreationMenubarModule.PPTX_MIMETYPE)) {
             return "NEW_POWERPOINT_DOCUMENT";
         }
+        if (StringUtils.equals(docType, DocumentCreationMenubarModule.DOCXF_MIMETYPE)) {
+            return "NEW_DOCXF_DOCUMENT";
+        }
+
         return "NEW_WORD_DOCUMENT";
     }
 
@@ -145,6 +151,10 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
         if (StringUtils.equals(docType, DocumentCreationMenubarModule.PPTX_MIMETYPE)) {
             return portletContext.getResourceAsStream(BLANK_PPTX_PATH);
         }
+        if (StringUtils.equals(docType, DocumentCreationMenubarModule.DOCXF_MIMETYPE)) {
+            return portletContext.getResourceAsStream(BLANK_DOCXF_PATH);
+        }
+
         return portletContext.getResourceAsStream(BLANK_DOCX_PATH);
     }
 
@@ -158,6 +168,10 @@ public class DocumentCreationController extends CMSPortlet implements PortletCon
         if (StringUtils.equals(docType, DocumentCreationMenubarModule.PPTX_MIMETYPE)) {
             return ".pptx";
         }
+        if (StringUtils.equals(docType, DocumentCreationMenubarModule.DOCXF_MIMETYPE)) {
+            return ".docxf";
+        }
+
         return ".docx";
     }
 
